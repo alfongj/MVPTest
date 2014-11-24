@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Carlos on 24/11/2014.
  */
-public class Beer implements Serializable{
+public class Beer implements Serializable, Comparable<Beer> {
 
     private int beer_id;
     private String name;
@@ -56,6 +56,11 @@ public class Beer implements Serializable{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(Beer another) {
+        return this.getName().compareTo(another.getName());
     }
 }
 

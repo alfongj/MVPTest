@@ -15,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 
 import carlosmuvi.mvptest.entities.Beer;
@@ -37,7 +38,7 @@ public class MainInteractorImpl implements MainInteractor {
             public void run() {
                 try {
                     gson = new Gson();
-                    String responseString = "";
+                    String responseString;
                     HttpGet httpget = new HttpGet(URL);
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
                     responseString = client.execute(httpget, responseHandler);
@@ -45,6 +46,7 @@ public class MainInteractorImpl implements MainInteractor {
                     Type listBeerType = new TypeToken<List<Beer>>() {
                     }.getType();
                     List<Beer> bc = gson.fromJson(responseString, listBeerType);
+                    Collections.sort(bc);
 
                     threadMsgSuccess(bc);
 
@@ -67,7 +69,7 @@ public class MainInteractorImpl implements MainInteractor {
 
             private void threadMsgError(String error) {
 
-                if (null != error & !error.isEmpty()) {
+                if (null != error && !error.isEmpty()) {
                     Message msgObj = handler.obtainMessage();
                     Bundle b = new Bundle();
                     b.putString("error", error);
